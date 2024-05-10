@@ -1,0 +1,21 @@
+# The Docker image that will be used to build your app
+image: node:20
+pages:
+  stage: deploy
+  cache:
+    key:
+      files:
+        - package-lock.json
+      prefix: npm
+    paths:
+      - node_modules/
+  script:
+    - yarn  
+    - yarn build
+    - cp -a dist/. public/
+    - echo '/* /index.html 200'>public/_redirects
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
